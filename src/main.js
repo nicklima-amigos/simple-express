@@ -84,6 +84,8 @@ app.post('/tarefas', (req, res) => {
   );
 });
 
+app.delete()
+
 // roda o servidor
 app.listen(3000, () => {
   console.log('servidor rodando na porta 3000');
