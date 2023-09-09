@@ -23,10 +23,12 @@ app.get('/', (req, res) => {
   });
 });
 
+// Retornando uma string
 app.get('/string', (req, res) => {
   res.send('uma string aleatória');
 });
 
+// Mostrando todas tarefas
 app.get('/tarefas', (req, res) => {
   database.all(
     `SELECT id, titulo, descricao, feito FROM tarefas;`,
@@ -42,6 +44,7 @@ app.get('/tarefas', (req, res) => {
   );
 });
 
+// Obtendo tarefa especifica
 app.get('/tarefas/:tarefaId', (req, res) => {
   const id = req.params.tarefaId;
   database.get(
@@ -65,6 +68,7 @@ app.get('/tarefas/:tarefaId', (req, res) => {
   );
 });
 
+// Adicionando tarefa
 app.post('/tarefas', (req, res) => {
   const tarefa = req.body;
   database.run(
@@ -84,6 +88,7 @@ app.post('/tarefas', (req, res) => {
   );
 });
 
+// Alterando tarefa
 app.put('/tarefas', (req, res) => {
   const tarefa = req.body;
   database.run(
@@ -103,6 +108,7 @@ app.put('/tarefas', (req, res) => {
   )
 });
 
+// Deletando tarefa
 app.delete('/tarefas', (req, res) => {
   const tarefa = req.body;
   database.run(
