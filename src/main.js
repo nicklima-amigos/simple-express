@@ -23,10 +23,12 @@ app.get('/', (req, res) => {
   });
 });
 
+// Retornando uma string
 app.get('/string', (req, res) => {
   res.send('uma string aleatória');
 });
 
+// Mostrando todas tarefas
 app.get('/tarefas', (req, res) => {
   database.all(
     `SELECT id, titulo, descricao, feito FROM tarefas;`,
@@ -42,6 +44,7 @@ app.get('/tarefas', (req, res) => {
   );
 });
 
+// Obtendo tarefa especifica
 app.get('/tarefas/:tarefaId', (req, res) => {
   const id = req.params.tarefaId;
   database.get(
@@ -65,6 +68,7 @@ app.get('/tarefas/:tarefaId', (req, res) => {
   );
 });
 
+// Adicionando tarefa
 app.post('/tarefas', (req, res) => {
   const tarefa = req.body;
   database.run(
@@ -73,7 +77,7 @@ app.post('/tarefas', (req, res) => {
     (err) => {
       if (err != null) {
         res.json({
-          mensagem: 'algo deu errado e não foi possível criar sua tarefa',
+          mensagem: 'Algo deu errado e não foi possível criar sua tarefa',
         });
       } else {
         res.status(201).json({
@@ -82,6 +86,46 @@ app.post('/tarefas', (req, res) => {
       }
     }
   );
+});
+
+// Alterando tarefa
+app.put('/tarefas', (req, res) => {
+  const tarefa = req.body;
+  database.run(
+    'UPDATE tarefas SET titulo = ?, descricao = ?, feito = ? WHERE id = ?',
+    [tarefa.titulo, tarefa.descricao, tarefa.feito, tarefa.id],
+    (err) => {
+      if (err != null) {
+        res.json({
+          mensagem: 'Algo deu errado e não foi possível alterar essa tarefa',
+        });}
+      else {
+        res.status(201).json({
+          mensagem: 'Tarefa alterada com sucesso'
+        })
+      }
+    }
+  )
+});
+
+// Deletando tarefa
+app.delete('/tarefas', (req, res) => {
+  const tarefa = req.body;
+  database.run(
+    'DELETE FROM tarefas WHERE id = ?', 
+    [tarefa.id],
+    (err) => {
+      if (err != null) {
+        res.json({
+          mensagem: 'Algo deu errado e não foi possível deletar essa tarefa',
+        });}
+      else {
+        res.status(201).json({
+          mensagem: 'Tarefa deletada com sucesso'
+        })
+      }
+    }
+  )
 });
 
 // roda o servidor
